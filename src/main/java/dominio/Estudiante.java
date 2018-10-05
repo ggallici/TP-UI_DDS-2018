@@ -4,13 +4,20 @@ import java.util.List;
 
 import org.uqbar.commons.utils.Observable;
 
+import com.google.gson.annotations.SerializedName;
+
 @Observable
 public class Estudiante
 {
+	@SerializedName("code")
 	private int legajo;
+	@SerializedName("first_name")
 	private String nombre;
+	@SerializedName("last_name")
 	private String apellido;
+	@SerializedName("github_user")
 	private String usuarioGitHub;
+	@SerializedName("assignments")
 	private List<Tarea> tareas;
 	
 	public boolean aproboMateria() {

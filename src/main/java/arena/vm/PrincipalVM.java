@@ -1,25 +1,28 @@
 package arena.vm;
 
+import javax.ws.rs.core.Response;
+
 import org.uqbar.commons.model.UserException;
 import org.uqbar.commons.utils.Observable;
 
 import dominio.Estudiante;
-import repositorios.RepositorioEstudiantes;
+import dominio.servicios.NotitasRestService;
+import dominio.servicios.ParserEstudiante;
 
 @Observable
 public class PrincipalVM {
 
 	private Estudiante estudiante;
-	private int legajo;
+	private String token;
 	
-	public int getLegajo() {
+	public String getToken() {
 		
-		return legajo;
+		return token;
 	}
 
-	public void setLegajo(int legajo) {
+	public void setToken(String token) {
 		
-		this.legajo = legajo;
+		this.token = token;
 	}
 
 	public Estudiante getEstudiante() {
@@ -34,9 +37,26 @@ public class PrincipalVM {
 
 	public void buscarEstudiante() {
 		
-		estudiante = RepositorioEstudiantes
-				.getInstancia()
-				.buscarEstudiante(legajo)
-				.orElseThrow(() -> new UserException("No existe estudiante de legajo: " + legajo));
+		ParserEstudiante parser = new ParserEstudiante();
+		
+		NotitasRestService servicio = new NotitasRestService(token);
+		
+		Response respuestaInformacionPersonal = servicio.getInformacionPersonal();
+		
+		Response respuestaTareas = servicio.getTareas();
+		
+		if(respuestaInformacionPersonal.getStatus() == 200 && respuestaTareas.getStatus() == 200) {
+			
+			String informacionPersonal = respuestaInformacionPersonal.readEntity(String.class);
+			
+			String tareas = respuestaTareas.readEntity(String.class);
+
+			estudiante = parser.parsear(informacionPersonal, tareas);
+		}
+		else {
+			
+			throw new UserException("" );
+		}
+		
 	}
 }

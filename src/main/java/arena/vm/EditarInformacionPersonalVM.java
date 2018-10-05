@@ -1,8 +1,13 @@
 package arena.vm;
 
+import javax.ws.rs.core.Response;
+
+import org.uqbar.commons.model.UserException;
 import org.uqbar.commons.utils.Observable;
 
 import dominio.Estudiante;
+import dominio.servicios.NotitasRestService;
+import dominio.servicios.ParserEstudiante;
 
 @Observable
 public class EditarInformacionPersonalVM {
@@ -52,5 +57,21 @@ public class EditarInformacionPersonalVM {
 	public void setUsuarioGitHub(String usuarioGitHub) {
 		
 		estudiante.setUsuarioGitHub(usuarioGitHub);
+	}
+
+	public void editarInformacionPersonal(String token) {
+		
+		ParserEstudiante parser = new ParserEstudiante();
+		
+		NotitasRestService servicio = new NotitasRestService(token);
+		
+		String estudianteParseado = parser.parsear(estudiante);
+		
+		Response respuesta = servicio.setInformacionPersonal(estudianteParseado);
+		
+		if(respuesta.getStatus() != 201) {
+			
+			throw new UserException("un mensaje" + respuesta.getStatus());
+		}
 	}
 }

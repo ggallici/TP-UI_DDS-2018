@@ -36,12 +36,12 @@ public class PrincipalWindow extends SimpleWindow<PrincipalVM>{
 		
 		
 		//AUTENTICACION
-		GroupPanel panelLegajo = new GroupPanel(panelPrincipal);
-		panelLegajo.setTitle("Autenticacion:");
-		panelLegajo.setLayout(new ColumnLayout(2));
-		new Label(panelLegajo).setText("Ingrese legajo:");
-		new TextBox(panelLegajo).setWidth(295).bindValueToProperty("legajo");
-		new Button(panelLegajo).setCaption("Buscar estudiante").onClick(this::buscarEstudiante);
+		GroupPanel panelToken = new GroupPanel(panelPrincipal);
+		panelToken.setTitle("Autenticacion:");
+		panelToken.setLayout(new ColumnLayout(2));
+		new Label(panelToken).setText("Ingrese token:");
+		new TextBox(panelToken).setWidth(295).bindValueToProperty("token");
+		new Button(panelToken).setCaption("Buscar estudiante").onClick(this::buscarEstudiante);
 		
 		
 		//INFORMACION PERSONAL
@@ -101,6 +101,6 @@ public class PrincipalWindow extends SimpleWindow<PrincipalVM>{
 	
 	public void editarInformacionEstudiante() {
 		
-		new EditarInformacionPersonalWindow(this, getModelObject().getEstudiante()).open();
+		new EditarInformacionPersonalWindow(this, getModelObject().getEstudiante(), getModelObject().getToken()).open();
 	}
 }

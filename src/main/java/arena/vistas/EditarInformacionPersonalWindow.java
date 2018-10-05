@@ -16,9 +16,13 @@ import dominio.Estudiante;
 @SuppressWarnings("serial")
 public class EditarInformacionPersonalWindow extends TransactionalDialog<EditarInformacionPersonalVM>
 {
-	public EditarInformacionPersonalWindow(WindowOwner owner, Estudiante estudiante) {
+	private String token;
+
+	public EditarInformacionPersonalWindow(WindowOwner owner, Estudiante estudiante, String token) {
 		
 		super(owner, new EditarInformacionPersonalVM(estudiante));
+		
+		this.token = token;
 	}
 	
 	@Override
@@ -45,7 +49,14 @@ public class EditarInformacionPersonalWindow extends TransactionalDialog<EditarI
 	@Override
 	protected void addActions(Panel panelBotones) {
 		
-		new Button(panelBotones).setCaption("Guardar Cambios").onClick(this::accept).setAsDefault();
+		new Button(panelBotones).setCaption("Guardar Cambios").onClick(this::editarInformacionPersonal).setAsDefault();
 		new Button(panelBotones).setCaption("Cancelar").onClick(this::cancel);
+	}
+	
+	public void editarInformacionPersonal() {
+		
+		getModelObject().editarInformacionPersonal(token);
+		
+		accept();
 	}
 }
