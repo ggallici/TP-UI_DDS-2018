@@ -8,7 +8,7 @@ import dominio.Nota;
 
 public class ParserEstudiante {
 
-	private Gson jsonParser = new Gson();
+	private Gson jsonParser;
 	
 	public ParserEstudiante() {
 		
